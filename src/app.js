@@ -15,4 +15,5 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/admin", require("./modules/admin/admin.routes"));
 app.use("/api/v1/students", require("./modules/students/student.routes"));
 app.use("/api/v1/resumes", require("./modules/resumes/resume.routes"));
+app.use("/api/v1/drives", require("./modules/drives/drives.routes"));
 module.exports = app;

@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+#SQL Queries
+.sql
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads (important — do not commit resume PDFs)
+uploads/
+
+# Mongo local data (if any)
+data/
+
+# Coverage
+coverage/
+
+# VSCode
+.vscode/
+
+# Temporary files
+tmp/

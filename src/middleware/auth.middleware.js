@@ -1,16 +1,39 @@
 const jwt = require("jsonwebtoken");
+const db = require("../config/db.postgres");
 
-function authMiddleware(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) return res.status(401).json({ error: "NO_TOKEN" });
-
+async function authMiddleware(req, res, next) {
   try {
+    const header = req.headers.authorization;
+
+    if(!header) {
+      return res.status(401).json({error:"NO_TOKEN"});
+    }
+    const token = header.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    const roleQuery = `
+      SELECT r.name
+      FROM user_roles ur
+      JOIN roles r ON ur.role_id = r.id
+      WHERE ur.user_id = $1
+      LIMIT 1;
+    `;
+
+    const result = await db.query(roleQuery, [decoded.id]);
+
+    if (!result.rows.length) {
+      return res.status(403).json({ error: "NO_ROLE_ASSIGNED" });
+    }
+
+    req.user = {
+      id: decoded.id,
+      role: result.rows[0].name
+    };
+
     next();
-  } catch (err) {
-    return res.status(401).json({ error: "INVALID_TOKEN" });
+
+  } catch(err) {
+    return res.status(401).json({error:"INVALID_TOKEN"});
   }
 }
 
