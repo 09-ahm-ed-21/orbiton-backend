@@ -17,4 +17,6 @@ app.use("/api/v1/students", require("./modules/students/student.routes"));
 app.use("/api/v1/resumes", require("./modules/resumes/resume.routes"));
 app.use("/api/v1/drives", require("./modules/drives/drives.routes"));
 app.use("/api/v1/applications", require("./modules/applications/applications.routes"));
+app.use("/api/v1/rounds", require("./modules/rounds/rounds.routes"));
+app.use("/api/v1/offers", require("./modules/offers/offers.routes"));
 module.exports = app;
