@@ -1,0 +1,49 @@
+Requirement ID,Requirement Name,Requirement Type,Requirement Source,Priority Level,Potential Risks,Requirement Status,Requirement Owner,Acceptance Criteria,Test Cases,Objectives and Goals,Requested By,Position,Dept.
+FR-A, Support campus SSO (OIDC/SAML) with local fallback.,Functional,Documentation,High,,In Progress,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Multi-factor authentication optional.,Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Role-based access control; assign multiple roles to an account.,Functional,Documentation,Medium,,Completed,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-B," Student can create and edit a rich profile (personal, academics, projects, links).",Functional,Documentation,High,,Completed,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Resume upload (PDF/DOCX); store multiple versions; preserve original file and parsed JSON.,Functional,Documentation,High,,In Progress,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Canonical parsed resume schema must be produced for each uploaded resume.,Functional,Documentation,High,,Stalled,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-C," Recruiter/TPO can create drives with roles, salary/stipend, location, mode (on-campus/remote), and multi-stage rounds.",Functional,Documentation,High,,Completed,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Eligibility rules engine,Functional,Documentation,High,,Completed,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Application windows with capacity, waitlist, and manual overrides.",Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Stage transitions with feedback capture and timestamps.,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Offer creation, acceptance/rejection, appointment letter generation, and join-status tracking.",Functional,Documentation,Low,,Completed,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, System provides ranked candidate lists for recruiters based on resume-JD matching score + test scores + configured weights.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-D, Recruiter can enable anonymized (blind) shortlists.,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," In-app + email + configurable SMS for critical events (drive posted, shortlisted, interview scheduled, offer).",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-E, Notification preferences per user.,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Aptitude test engine (timed tests, question pools, proctoring flag).",Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-F," Coding judge integration (problems, auto-judge, plagiarism score).",Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Mock interview scheduling and recording (optional).,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Produce structured resume fields (name, contact, education, experience, skills, projects, links).",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-G," Generate an ATS-compatibility score (formatting, headings, contact).",Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Compute semantic fit score between resume and JD (hybrid,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Provide actionable suggestions (missing keywords, recommended sections, formatting fixes).",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-H," Maintain versions, diff view, and historical scores.",Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Generate per-student resource recommendations (courses, articles, practice sets) mapped to detected skill gaps.",Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-I, Generate per-drive resource packs (company-specific interview kits).,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Allow TPO/Faculty to curate and approve recommended resources.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Mentor matching (filters: expertise, availability, campus/alumni).",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-J," Booking slots, calendar sync (Google/Outlook), meeting links.",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Funnel analytics (applies → shortlist → interview → offer) with cohort filtering.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+,"KPIs: time-to-offer, acceptance rate, test pass rates, readiness score distribution.",Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-K, Export reports (CSV/PDF) and scheduled email reports.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Per-drive consent capture and storage (timestamp, scope).",Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Student-controlled visibility toggles (opt-in for recruiter view).,Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-L, DSAR flows: export/delete personal data on request.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+," Tenant configuration, branding, feature toggles.",Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Billing & subscription metadata (no payment gateway for MVP unless needed).,Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+FR-M, API & webhook endpoints for external integrations.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Immutable audit logs for critical actions.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Role/permission change history.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+, Admin console for monitoring security events.,Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-1,(Performance): API p95 < 300ms for common read endpoints; resume parse end-to-end (upload → parsed JSON) < 5s (baseline).,Non-Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-2,(Scalability): Support up to 10k users for single-campus MVP; horizontal scaling possible.,Non-Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-3,(Availability): 99.5% uptime for core services during placement season.,Non-Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-4,(Security): TLS all traffic; encrypt sensitive fields at rest; secrets via KMS.,Non-Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-5,(Privacy): Data minimization; consent recorded and enforced; audit trail retention configurable.,Non-Functional,Documentation,High,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-6,(Maintainability): CI/CD pipelines; infra as code; automated tests for regression.,Non-Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-7,(Usability): Primary flows completeable in ≤5 steps; mobile-responsive; WCAG 2.1 AA baseline.,Non-Functional,Documentation,Medium,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
+NFR-8,(ML constraints): Model inference latency <500ms; model explainability strings provided for top-3 features contributing to a prediction.,Non-Functional,Documentation,Low,,Not Started,Project Lead,,,,Ahmed Hakeem,Project Lead,CSE
