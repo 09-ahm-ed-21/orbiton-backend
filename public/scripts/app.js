@@ -7,7 +7,7 @@ const currentUser = {
   firstName: 'Ahmed',
   fullName: 'Ahmed Hakeem',
   email: 'dev.ahm.hak@gmail.com',
-  role: 'STUDENT', // STUDENT | TPO | RECRUITER
+  role: 'RECRUITER', // STUDENT | TPO | RECRUITER
   department: 'CSE',
   program: 'B.Tech',
   year_of_study: 4,
@@ -132,11 +132,9 @@ const routes = {
   '/tpo/notifications': () => page('TPO Notifications', 'Operational alerts and escalations.', alertsBody()),
   '/tpo/settings': () => page('TPO Settings', 'Policy controls and notification preferences.', settingsBody()),
 
-  '/recruiter/dashboard': () => page('Recruiter Dashboard', 'Scaffold route for future expansion.', `
-    <div class="card"><p>Recruiters can propose drives. Final publication remains under TPO control.</p><a class="btn" href="/recruiter/proposals">Go to Proposals</a></div>
-  `),
-  '/recruiter/proposals': () => page('Recruiter Proposals', 'Create and manage drive proposals.', proposalBody()),
-  '/recruiter/proposals/new': () => page('New Proposal', 'Submit a new drive proposal for TPO review.', proposalBody()),
+  '/recruiter/dashboard': () => recruiterDashboardPage(),
+  '/recruiter/proposals': () => recruiterProposalsPage(),
+  '/recruiter/proposals/new': () => recruiterDriveCreationPage(),
   '/recruiter/candidates': () => page('Candidates', 'Filtered and ranked applicants view.', `<div class="card"><p>Candidate table placeholder (to be API-connected in next phase).</p></div>`),
   '/recruiter/offers': () => page('Recruiter Offers', 'Draft and track offer release status.', appOfferBody())
 };
@@ -205,6 +203,103 @@ function profilePage(scope) {
   `);
 }
 
+function recruiterDashboardPage() {
+  return page('Recruiter Dashboard', 'Propose and track drives before TPO approval.', `
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-value">3</div><div class="kpi-label">Draft Proposals</div></div>
+      <div class="kpi"><div class="kpi-value">5</div><div class="kpi-label">Under TPO Review</div></div>
+      <div class="kpi"><div class="kpi-value">2</div><div class="kpi-label">Approved Drives</div></div>
+      <div class="kpi"><div class="kpi-value">1</div><div class="kpi-label">Needs Changes</div></div>
+    </div>
+    <div class="actions" style="margin-top:14px">
+      <a class="btn" href="/recruiter/proposals/new">Create New Drive Proposal</a>
+      <a class="btn secondary" href="/recruiter/proposals">View All Proposals</a>
+    </div>
+  `);
+}
+
+function recruiterProposalsPage() {
+  return page('Recruiter Proposals', 'Review the current proposal queue and statuses.', `
+    <div class="card">
+      <div class="actions" style="justify-content:space-between; margin-bottom:12px;">
+        <span class="badge">Proposal Queue</span>
+        <a class="btn" href="/recruiter/proposals/new">+ New Proposal</a>
+      </div>
+      <ul class="clean">
+        <li><strong>Software Engineer 2026</strong> — UNDER_REVIEW</li>
+        <li><strong>Data Analyst Internship</strong> — DRAFT</li>
+        <li><strong>Graduate Trainee Program</strong> — CHANGES_REQUESTED</li>
+      </ul>
+    </div>
+  `);
+}
+
+function recruiterDriveCreationPage() {
+  return page('Create Drive Proposal', 'Recruiter-side proposal form mapped to placement drive schema for TPO review.', `
+    <section class="drive-layout">
+      <div>
+        <form id="driveProposalForm">
+          <section class="form-section">
+            <h3>Role & Drive Basics</h3>
+            <div class="profile-form">
+              <div class="form-group"><label class="form-label" for="title">Drive Title</label><input id="title" class="form-input" placeholder="e.g., Software Engineer 2026"></div>
+              <div class="form-group"><label class="form-label" for="employment_type">Employment Type</label><select id="employment_type" class="form-select"><option>Full-time</option><option>Internship</option><option>PPO</option><option>Contract</option></select></div>
+              <div class="form-group full"><label class="form-label" for="description">Role Description</label><textarea id="description" class="form-textarea" placeholder="Role summary, responsibilities, hiring process"></textarea></div>
+              <div class="form-group"><label class="form-label" for="location">Location</label><input id="location" class="form-input" placeholder="Bangalore / Remote / Hybrid"></div>
+              <div class="form-group"><label class="form-label" for="package">Package Offered (CTC)</label><input id="package" class="form-input" type="number" step="0.01" placeholder="10.50"></div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Eligibility Rules</h3>
+            <div class="profile-form">
+              <div class="form-group"><label class="form-label" for="min_cgpa">Minimum CGPA</label><input id="min_cgpa" class="form-input" type="number" min="0" max="10" step="0.01" value="6.50"></div>
+              <div class="form-group"><label class="form-label" for="max_backlogs">Maximum Backlogs</label><input id="max_backlogs" class="form-input" type="number" min="0" value="0"></div>
+              <div class="form-group"><label class="form-label" for="min_year_of_study">Minimum Year of Study</label><input id="min_year_of_study" class="form-input" type="number" min="1" max="5" value="3"></div>
+              <div class="form-group"><label class="form-label" for="is_featured">Featured Drive</label><select id="is_featured" class="form-select"><option value="false">No</option><option value="true">Yes</option></select></div>
+              <div class="form-group full">
+                <label class="form-label">Eligible Departments</label>
+                <div class="check-grid">
+                  ${['CSE','ECE','EEE','ME','CE','IT','BBA','MCA','MBA'].map((d) => `<div class="check-item"><input id="dept_${d}" type="checkbox"><label for="dept_${d}">${d}</label></div>`).join('')}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Timeline & Review Submission</h3>
+            <div class="profile-form">
+              <div class="form-group"><label class="form-label" for="application_deadline">Application Deadline</label><input id="application_deadline" class="form-input" type="datetime-local"></div>
+              <div class="form-group"><label class="form-label" for="drive_start_date">Drive Start Date</label><input id="drive_start_date" class="form-input" type="datetime-local"></div>
+              <div class="form-group"><label class="form-label" for="drive_end_date">Drive End Date</label><input id="drive_end_date" class="form-input" type="datetime-local"></div>
+              <div class="form-group"><label class="form-label" for="proposal_status">Proposal Status</label><input id="proposal_status" class="form-input" value="DRAFT" readonly></div>
+              <div class="form-group full"><label class="form-label" for="notes">Notes for TPO</label><textarea id="notes" class="form-textarea" placeholder="Any clarifications or special constraints for TPO review"></textarea></div>
+            </div>
+            <div class="actions" style="margin-top:10px">
+              <button type="button" class="btn" onclick="alert('Proposal save placeholder')">Save Draft</button>
+              <button type="button" class="btn secondary" onclick="alert('Submitted to TPO placeholder')">Submit for TPO Review</button>
+            </div>
+          </section>
+        </form>
+      </div>
+
+      <aside class="drive-sidebar">
+        <h3 style="margin-top:0">Schema Mapping</h3>
+        <ul class="mini-list">
+          <li><code>title</code>, <code>description</code>, <code>employment_type</code></li>
+          <li><code>min_cgpa</code>, <code>max_backlogs</code>, <code>min_year_of_study</code></li>
+          <li><code>eligible_departments[]</code></li>
+          <li><code>package_offered</code>, <code>location</code></li>
+          <li><code>application_deadline</code>, <code>drive_start_date</code>, <code>drive_end_date</code></li>
+          <li><code>status</code> starts as <code>DRAFT</code></li>
+        </ul>
+        <hr>
+        <p style="margin:0">Recruiters can <strong>propose</strong>. TPO performs approval/publish actions.</p>
+      </aside>
+    </section>
+  `);
+}
+
 function resumeBody() {
   return `<div class="grid cols-2"><article class="card"><h3>Manual Sections</h3><ul class="clean"><li>Education</li><li>Skills</li><li>Experience</li><li>Projects</li><li>Certifications</li></ul></article><article class="card"><h3>Parser Assist</h3><p>Upload resume and review parser output before confirming changes.</p><div class="actions"><button class="btn">Upload Resume</button><button class="btn secondary">Review Parsed Data</button></div></article></div>`;
 }
@@ -239,7 +334,10 @@ function resolveDynamicPath(pathname) {
   if (pathname.startsWith('/student/offers/')) return routes['/student/offers']();
   if (pathname.startsWith('/tpo/recruiter-proposals/')) return routes['/tpo/recruiter-proposals']();
   if (pathname.startsWith('/tpo/drives/')) return routes['/tpo/drives']();
-  if (pathname.startsWith('/recruiter/proposals/')) return routes['/recruiter/proposals']();
+  if (pathname.startsWith('/recruiter/proposals/')) {
+    if (pathname === '/recruiter/proposals/new') return routes['/recruiter/proposals/new']();
+    return routes['/recruiter/proposals']();
+  }
   return null;
 }
 
@@ -283,9 +381,11 @@ function setupHeaderInteractions() {
     if (action === 'Your Profile') {
       navigate(routeForProfile(currentUser.role));
     } else if (action === 'Calendar') {
-      navigate('/student/dashboard');
+      navigate(currentUser.role === 'RECRUITER' ? '/recruiter/dashboard' : '/student/dashboard');
     } else if (action === 'Settings') {
-      navigate(currentUser.role === 'TPO' ? '/tpo/settings' : '/student/settings');
+      if (currentUser.role === 'TPO') navigate('/tpo/settings');
+      else if (currentUser.role === 'RECRUITER') navigate('/recruiter/dashboard');
+      else navigate('/student/settings');
     } else if (action === 'Log Out') {
       alert('Log out action placeholder');
     } else if (action === 'Review Proposals') {
