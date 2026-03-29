@@ -14,10 +14,15 @@
       <a href="/" class="brand">ORBITON</a>
       <nav class="top-links">
         <a href="/">Home</a>
-        <a href="/student/dashboard">Student</a>
-        <a href="/tpo/dashboard">TPO</a>
-        <a href="/recruiter/dashboard">Recruiter</a>
       </nav>
+
+      <div class="profile-menu-wrap">
+        <button id="profileToggle" class="profile-toggle" aria-expanded="false" aria-haspopup="menu">
+          <span id="profileName">User</span>
+          <span class="avatar">U</span>
+        </button>
+        <div id="profileMenu" class="profile-menu hidden" role="menu" aria-label="Profile menu"></div>
+      </div>
     </header>
 
     <main id="app"></main>

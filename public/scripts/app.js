@@ -1,4 +1,37 @@
 const app = document.getElementById('app');
+const profileToggle = document.getElementById('profileToggle');
+const profileName = document.getElementById('profileName');
+const profileMenu = document.getElementById('profileMenu');
+
+const currentUser = {
+  firstName: 'Ahmed',
+  fullName: 'Ahmed Hakeem',
+  email: 'dev.ahm.hak@gmail.com',
+  role: 'STUDENT', // STUDENT | TPO | RECRUITER
+  department: 'CSE',
+  program: 'B.Tech',
+  year_of_study: 4,
+  cgpa: '8.50',
+  backlog_count: 0,
+  phone: '+91-9876543210',
+  bio: 'Aspiring software engineer focused on distributed systems and product design.'
+};
+
+const commonMenu = [
+  'Your Profile',
+  'Calendar',
+  'Settings',
+  'Theme: Light/Dark',
+  'FAQ',
+  'Get Support',
+  'Log Out'
+];
+
+const roleExtras = {
+  STUDENT: ['My Applications'],
+  TPO: ['Review Proposals'],
+  RECRUITER: ['My Drive Proposals']
+};
 
 const page = (title, subtitle, body) => `
   <section>
@@ -55,12 +88,9 @@ const routes = {
     </div>
   `),
 
-  '/student/profile': () => page('Student Profile', 'Academic and personal details for eligibility checks.', `
-    <div class="card">
-      <ul class="clean"><li>Full Name</li><li>Department</li><li>Program</li><li>Year of Study</li><li>CGPA</li><li>Backlog Count</li></ul>
-      <div class="actions" style="margin-top:12px"><button class="btn">Save Profile</button></div>
-    </div>
-  `),
+  '/student/profile': () => profilePage('STUDENT'),
+  '/tpo/profile': () => profilePage('TPO'),
+  '/recruiter/profile': () => profilePage('RECRUITER'),
 
   '/student/resume': () => page('Resume Workspace', 'Manual-first structured resume with parser-assisted prefill.', resumeBody()),
   '/student/resume/manual-edit': () => page('Resume Manual Edit', 'Education, Skills, Experience, Projects and Certifications forms.', resumeBody()),
@@ -82,9 +112,7 @@ const routes = {
     <div class="card"><ul class="clean"><li>Your round result is published.</li><li>New drive opened for your department.</li><li>Placement office meeting reminder.</li></ul></div>
   `),
 
-  '/student/settings': () => page('Settings', 'Account preferences and communication options.', `
-    <div class="card"><ul class="clean"><li>Email notifications</li><li>MFA preferences</li><li>Password management</li></ul></div>
-  `),
+  '/student/settings': () => page('Settings', 'Account preferences and communication options.', settingsBody()),
 
   '/tpo/dashboard': () => page('TPO Dashboard', 'Placement operations command center.', `
     <div class="kpis">
@@ -109,9 +137,7 @@ const routes = {
   `),
   '/recruiter/proposals': () => page('Recruiter Proposals', 'Create and manage drive proposals.', proposalBody()),
   '/recruiter/proposals/new': () => page('New Proposal', 'Submit a new drive proposal for TPO review.', proposalBody()),
-  '/recruiter/candidates': () => page('Candidates', 'Filtered and ranked applicants view.', `
-    <div class="card"><p>Candidate table placeholder (to be API-connected in next phase).</p></div>
-  `),
+  '/recruiter/candidates': () => page('Candidates', 'Filtered and ranked applicants view.', `<div class="card"><p>Candidate table placeholder (to be API-connected in next phase).</p></div>`),
   '/recruiter/offers': () => page('Recruiter Offers', 'Draft and track offer release status.', appOfferBody())
 };
 
@@ -121,6 +147,61 @@ function authPage(label) {
       <p>This page is scaffolded and ready for API integration.</p>
       <div class="actions"><button class="btn">Primary Action</button><a class="btn secondary" href="/auth/login">Back to Login</a></div>
     </div>
+  `);
+}
+
+function profilePage(scope) {
+  const scopeSection = {
+    STUDENT: `
+      <div class="form-group"><label class="form-label" for="department">Department</label><input id="department" class="form-input" value="${currentUser.department}"></div>
+      <div class="form-group"><label class="form-label" for="program">Program</label><input id="program" class="form-input" value="${currentUser.program}"></div>
+      <div class="form-group"><label class="form-label" for="year">Year of Study</label><input id="year" class="form-input" type="number" value="${currentUser.year_of_study}"></div>
+      <div class="form-group"><label class="form-label" for="cgpa">CGPA</label><input id="cgpa" class="form-input" value="${currentUser.cgpa}"></div>
+      <div class="form-group"><label class="form-label" for="backlog">Backlog Count</label><input id="backlog" class="form-input" type="number" value="${currentUser.backlog_count}"></div>
+    `,
+    TPO: `
+      <div class="form-group"><label class="form-label" for="office">Office</label><input id="office" class="form-input" value="Placement Office"></div>
+      <div class="form-group"><label class="form-label" for="designation">Designation</label><input id="designation" class="form-input" value="Training & Placement Officer"></div>
+      <div class="form-group full"><label class="form-label" for="policy">Escalation Policy Note</label><textarea id="policy" class="form-textarea">Post-offer student opt-outs trigger mandatory counseling workflow.</textarea></div>
+    `,
+    RECRUITER: `
+      <div class="form-group"><label class="form-label" for="company">Company Name</label><input id="company" class="form-input" value="Acme Tech"></div>
+      <div class="form-group"><label class="form-label" for="industry">Industry</label><input id="industry" class="form-input" value="Software"></div>
+      <div class="form-group"><label class="form-label" for="designation">Designation</label><input id="designation" class="form-input" value="Talent Partner"></div>
+      <div class="form-group full"><label class="form-label" for="pref">Preferred Hiring Note</label><textarea id="pref" class="form-textarea">Open to final-year students with internship experience.</textarea></div>
+    `
+  };
+
+  return page('Your Profile', `Manage account details for ${scope}.`, `
+    <section class="profile-layout">
+      <aside class="profile-side">
+        <button class="profile-nav-item active">Personal Info</button>
+        <button class="profile-nav-item">Security & Sign-in</button>
+        <button class="profile-nav-item">Data & Privacy</button>
+        <button class="profile-nav-item">Activity</button>
+      </aside>
+      <section class="profile-main">
+        <div class="profile-head">
+          <div class="profile-big-avatar">${currentUser.firstName.charAt(0)}</div>
+          <div>
+            <h3 style="margin:0">${currentUser.fullName}</h3>
+            <p style="margin:2px 0 0">${currentUser.email}</p>
+          </div>
+        </div>
+
+        <form class="profile-form">
+          <div class="form-group"><label class="form-label" for="full_name">Full Name</label><input id="full_name" class="form-input" value="${currentUser.fullName}"></div>
+          <div class="form-group"><label class="form-label" for="email">Email</label><input id="email" class="form-input" value="${currentUser.email}"></div>
+          <div class="form-group"><label class="form-label" for="phone">Phone</label><input id="phone" class="form-input" value="${currentUser.phone}"></div>
+          <div class="form-group"><label class="form-label" for="role">Role</label><input id="role" class="form-input" value="${scope}" readonly></div>
+
+          ${scopeSection[scope]}
+
+          <div class="form-group full"><label class="form-label" for="bio">Bio</label><textarea id="bio" class="form-textarea">${currentUser.bio}</textarea></div>
+        </form>
+        <div class="actions" style="margin-top:12px"><button class="btn">Save Profile</button></div>
+      </section>
+    </section>
   `);
 }
 
@@ -162,10 +243,76 @@ function resolveDynamicPath(pathname) {
   return null;
 }
 
+function buildProfileMenu() {
+  const actions = [...commonMenu, ...(roleExtras[currentUser.role] || [])];
+
+  profileName.textContent = currentUser.firstName;
+  const avatar = profileToggle.querySelector('.avatar');
+  avatar.textContent = currentUser.firstName.charAt(0).toUpperCase();
+
+  profileMenu.innerHTML = actions
+    .map((item) => `<button type="button" data-action="${item}">${item}</button>`)
+    .join('');
+}
+
+function routeForProfile(role) {
+  if (role === 'TPO') return '/tpo/profile';
+  if (role === 'RECRUITER') return '/recruiter/profile';
+  return '/student/profile';
+}
+
+function setupHeaderInteractions() {
+  profileToggle.addEventListener('click', () => {
+    const hidden = profileMenu.classList.toggle('hidden');
+    profileToggle.setAttribute('aria-expanded', String(!hidden));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.profile-menu-wrap')) {
+      profileMenu.classList.add('hidden');
+      profileToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  profileMenu.addEventListener('click', (e) => {
+    const button = e.target.closest('button[data-action]');
+    if (!button) return;
+
+    const action = button.dataset.action;
+
+    if (action === 'Your Profile') {
+      navigate(routeForProfile(currentUser.role));
+    } else if (action === 'Calendar') {
+      navigate('/student/dashboard');
+    } else if (action === 'Settings') {
+      navigate(currentUser.role === 'TPO' ? '/tpo/settings' : '/student/settings');
+    } else if (action === 'Log Out') {
+      alert('Log out action placeholder');
+    } else if (action === 'Review Proposals') {
+      navigate('/tpo/recruiter-proposals');
+    } else if (action === 'My Drive Proposals') {
+      navigate('/recruiter/proposals');
+    } else if (action === 'My Applications') {
+      navigate('/student/applications');
+    } else {
+      alert(`${action} placeholder`);
+    }
+
+    profileMenu.classList.add('hidden');
+    profileToggle.setAttribute('aria-expanded', 'false');
+  });
+}
+
 function render() {
   const pathname = window.location.pathname;
-  const view = routes[pathname] || resolveDynamicPath(pathname);
+  const routeFn = routes[pathname];
+  const view = routeFn ? routeFn() : resolveDynamicPath(pathname);
   app.innerHTML = view || page('404', 'Page not found in current scaffold.', `<div class="card"><a class="btn" href="/">Go Home</a></div>`);
+}
+
+function navigate(path) {
+  window.history.pushState({}, '', path);
+  render();
 }
 
 window.addEventListener('click', (e) => {
@@ -174,9 +321,11 @@ window.addEventListener('click', (e) => {
   const href = a.getAttribute('href');
   if (!href.startsWith('/')) return;
   e.preventDefault();
-  window.history.pushState({}, '', href);
-  render();
+  navigate(href);
 });
 
 window.addEventListener('popstate', render);
+
+buildProfileMenu();
+setupHeaderInteractions();
 render();
