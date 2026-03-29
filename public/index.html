@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orbiton</title>
+    <link rel="stylesheet" href="/styles/orbiton.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-top"></div>
+    <div class="bg-orb orb-bottom"></div>
+
+    <header class="topbar">
+      <a href="/" class="brand">ORBITON</a>
+      <nav class="top-links">
+        <a href="/">Home</a>
+      </nav>
+
+      <div class="profile-menu-wrap">
+        <button id="profileToggle" class="profile-toggle" aria-expanded="false" aria-haspopup="menu">
+          <span id="profileName">User</span>
+          <span class="avatar">U</span>
+        </button>
+        <div id="profileMenu" class="profile-menu hidden" role="menu" aria-label="Profile menu"></div>
+      </div>
+    </header>
+
+    <main id="app"></main>
+
+    <script src="/scripts/app.js"></script>
+  </body>
+</html>
